@@ -18,6 +18,7 @@ nano settings.py
 OPTIONAL:
 To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](https://skullhouse.nyc)
 webserver since the reservations will nominally be for the use of fraternity members.
+
     TODO Add in the crontab script so that if they do ./setup it will automatically setup daily cronjobs
 
 
