@@ -6,17 +6,19 @@ This script is for the use of automatically reserving rooms in bobst library.
 
 ## Usage
 
-    1.) First you'll need to move and edit the settings file
+1.) First you'll need to move and edit the settings file
+
 ```
 mv example.settings.py settings.py
 nano settings.py
 ```
-    2.) Simply use ./AutoReserve.py to run the program.
 
-    OPTIONAL:
-    To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](skullhouse.nyc)
-    webserver since the reservations will nominally be for the use of fraternity members.
-    TODO
+2.) Simply use ./AutoReserve.py to run the program.
+
+OPTIONAL:
+To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](https://skullhouse.nyc)
+webserver since the reservations will nominally be for the use of fraternity members.
+    TODO Add in the crontab script so that if they do ./setup it will automatically setup daily cronjobs
 
 
 ## The Explaination
