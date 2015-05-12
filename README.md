@@ -8,4 +8,4 @@ TODO
 TODO
 
 ## Licensing
-This software is released under the GNU GPL 2.0 License as described in the [a relative link]LICENSE(LICENSE) file.
+This software is released under the GNU GPL 2.0 License as described in the [License file](LICENSE).
