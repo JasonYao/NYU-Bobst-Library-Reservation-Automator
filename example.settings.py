@@ -8,6 +8,12 @@ overallPassword = 'ExamplePassword' # Your password
 # The number of days in advance that you'd like to reserve the rooms, default is 60
 offsetDays = 60
 
+# Floor number wanted:
+floorNumber = 'LL1'
+
+# Room number wanted:
+roomNumber = '20'
+
 # The NetIDs of friends that allow you to have their login information - recommended max is 5 people (10 hours)
 loginFriends = [
     'example@email.com',
