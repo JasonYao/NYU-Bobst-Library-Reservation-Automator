@@ -58,3 +58,5 @@ target/
 
 # Project specific ignores:
 settings.py
+.env/
+.idea/
