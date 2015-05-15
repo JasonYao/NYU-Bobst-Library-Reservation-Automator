@@ -8,4 +8,5 @@ source $BASEDIR/.env/bin/activate
 cd $BASEDIR
 export PYTHONPATH=.
 
-exec python $@
+$BASEDIR/AutoReserve.py
+#exec python $@
