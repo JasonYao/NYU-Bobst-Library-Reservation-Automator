@@ -1,12 +1,15 @@
 #!/bin/bash -e
 
-BASEDIR=`dirname $0`/..
+BASEDIR=`dirname $0`/
 
-$BASEDIR/bin/setup
+$BASEDIR/bin/scripts/setup
 
 source $BASEDIR/.env/bin/activate
 cd $BASEDIR
 export PYTHONPATH=.
 
-$BASEDIR/AutoReserve.py
+echo "Running Automator script now"
+python3 AutoReserve.py
+
+deactivate
 #exec python $@
