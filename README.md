@@ -5,8 +5,17 @@ An automator written in Python to automatically book the room that you want, can
 This script is for the use of automatically reserving rooms in bobst library.
 
 ## Usage
+1.) Make a project directory to keep this out of your way
+```
+[If on OSX]: cd ~/Documents/
+[If on Ubuntu]: cd ~
 
-1.) First you'll need to move and edit the settings file
+mkdir projects
+cd projects
+git clone https://github.com/JasonYao/NYU-Bobst-Library-Reservation-Automator.git
+```
+
+2.) First you'll need to move and edit the settings file
 
 ```
 mv example.settings.py settings.py
@@ -19,13 +28,13 @@ CTRL + x
 y
 ```
 
-2.) Simply use `./run.sh` to check and download dependencies if required, and build a localized virtual environment automatically.
+3.) Simply use `./run.sh` to check and download dependencies if required, and build a localized virtual environment automatically.
 
 OPTIONAL:
 To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](https://skullhouse.nyc)
 webserver since the reservations will nominally be for the use of fraternity members.
 
-3.) run ` ./time ` to have your server/computer run the program every x time. You will be prompted to insert the time
+4.) run ` ./time ` to have your server/computer run the program every x time. You will be prompted to insert the time
 between jobs, please don't be an ass and set it to every 1 seconds, that'll just wreck your computer, and I absolve myself
 of any liability for your stupidity.
 
