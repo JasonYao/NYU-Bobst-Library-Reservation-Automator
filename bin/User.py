@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 __author__ = 'Jason Yao'
-
 
 class User:
     def __init__(self, username, password):

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 __author__ = 'Jason Yao'
 
 # Majour imports
@@ -9,71 +8,82 @@ from selenium.webdriver.support import select
 
 # Package dependent imports
 import settings
+from bin import ValidationError
 
 # Function to turn an into into their string form
 def toMonth(someMonth):
     try:
         returnMonth = ''
-        if someMonth == 1:
+        if someMonth == '01':
             returnMonth = 'January'
-        elif someMonth == 2:
+        elif someMonth == '02':
             returnMonth = 'February'
-        elif someMonth == 3:
+        elif someMonth == '03':
             returnMonth = 'March'
-        elif someMonth == 4:
+        elif someMonth == '04':
             returnMonth = 'April'
-        elif someMonth == 5:
+        elif someMonth == '05':
             returnMonth = 'May'
-        elif someMonth == 6:
+        elif someMonth == '06':
             returnMonth = 'June'
-        elif someMonth == 7:
+        elif someMonth == '07':
             returnMonth = 'July'
-        elif someMonth == 8:
+        elif someMonth == '08':
             returnMonth = 'August'
-        elif someMonth == 9:
+        elif someMonth == '09':
             returnMonth = 'September'
-        elif someMonth == 10:
+        elif someMonth == '10':
             returnMonth = 'October'
-        elif someMonth == 11:
+        elif someMonth == '11':
             returnMonth = 'November'
-        elif someMonth == 12:
+        elif someMonth == '12':
             returnMonth = 'December'
         else:
-            raise MonthError(someMonth)
+            raise Exception(someMonth)
         return returnMonth
-    except MonthError as e:
-        print('The month did not parse correctly: ' + e.value)
+    except Exception as e:
+        print('The month did not parse correctly')
         exit(1)
 
 # Modularizes our code via a main method
 def main():
     # Fills in the date wanted, only generated once
-    currentDate = datetime.date
+    currentDate = datetime.date.today()
     reservationDate = currentDate + datetime.timedelta(days = settings.offsetDays)
     reservationYear = reservationDate.strftime("%Y") # Date in string form for easy comparison
-    reservationMonth = toMonth(reservationDate.strftime("%m")) # Month in string form for easy comparison
+    reservationMonth = toMonth(reservationDate.strftime('%m')) # Month in string form for easy comparison
 
     # Builds a browser connection
     browser = webdriver.Firefox()
+    print("Browser is now open")
 
     for i in range(0, len(settings.loginArray)):
         try:
+            print('Attempting to register with user number: ' + str(i))
             browser.get(
                 'https://login.library.nyu.edu/pds?func=load-login&institute=NYU&calling_system=https:login.library.nyu'
                 '.edu&url=https%3A%2F%2Frooms.library.nyu.edu%2Fvalidate%3Freturn_url%3Dhttps%253A%252F%252Frooms.'
                 'library.nyu.edu%252F%26https%3A%2F%2Flogin.library.nyu.edu_action%3Dnew%26https%3A%2F%2Flogin.'
                 'library.nyu.edu_controller%3Duser_sessions')
-            browser.find_element_by_class_name('btn').click()
+
+            browser.find_element_by_xpath("//div[@id='shibboleth']/p[1]/a").click()
 
             # Fills in login information
-            username = browser.find_element_by_name('netid')
-            password = browser.find_element_by_name('password')
-            login = browser.find_element_by_class_name('uppercase rounded')
+            username = browser.find_element_by_xpath("//form[@id='login']/input[1]")
+            password = browser.find_element_by_xpath("//form[@id='login']/input[2]")
 
             # Signs into bobst reserve with the username and password
             username.send_keys(settings.loginArray[i].username)
             password.send_keys(settings.loginArray[i].password)
-            login.click()
+            browser.find_element_by_xpath("//form[@id='login']/input[3]").click()
+
+            if browser.current_url == "https://shibboleth.nyu.edu/idp/Authn/UserPassword":
+                raise ValidationError.ValidationError("User had invalid login: " + str(i))
+
+
+            #browser.close()
+            print("Got to test point, exiting now")
+            exit(0)
 
             ##### START OF FUCKING AROUND WITH THE DATEPICKER #####TODO HOLY SHIT BALLS THIS IS HARD WTF KIND OF RETARDED SHIT IS NYU UP TO
             datePicker = browser.find_element_by_xpath("//div[@id='ui-datepicker-div']").click()
@@ -145,8 +155,15 @@ def main():
             # Logout
             browser.get('https://rooms.library.nyu.edu/logout')
 
-        except WebDriverException:
-            print("Shit, something went wrong.")
+        except GeneratorExit:
+            return
+        except ValidationError as ex:
+            print(ex)
+        except WebDriverException as ex1:
+            print("Failed on user number: " + str(i))
+            print(ex1)
+        except Exception as ex2:
+            print(ex2)
 
     # Close browser connection
     browser.close()
