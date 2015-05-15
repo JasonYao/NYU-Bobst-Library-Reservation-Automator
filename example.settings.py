@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
 __author__ = 'Jason Yao'
-
-# Variables that will be passed into the file
-overallUsername = 'YourNetID' # Your username
-overallPassword = 'ExamplePassword' # Your password
+# Import statements
+from bin import User
 
 # The number of days in advance that you'd like to reserve the rooms, default is 60
 offsetDays = 60
@@ -12,40 +9,26 @@ offsetDays = 60
 floorNumber = 'LL1'
 
 # Room number wanted:
-roomNumber = '20'
+roomNumber = '18'
 
-# The NetIDs of friends that allow you to have their login information - recommended max is 5 people (10 hours)
-loginFriends = [
-    'example@email.com',
-    'example1@email.com',
-    'example2@email.com',
-    'example3@email.com',
-    'example4@email.com',
-    'example5@email.com',
-    'example6@email.com',
-    'example7@email.com',
-]
+# Event description name:
+description = 'NYU Violets'
 
-# Put the passwords from each person that gave you their login information - recommended max is 5 people (10 hours)
-loginPasswords = [
-    'example@email.com',
-    'example1@email.com',
-    'example2@email.com',
-    'example3@email.com',
-    'example4@email.com',
-    'example5@email.com',
-    'example6@email.com',
-    'example7@email.com',
-]
+loginArray = []
+# For each valid username/password combo, put below in the form loginArray.append(User('username','password'))
+# NOTE: To book a room for 24 hours will require 12 valid people's login information
+loginArray.append(User.User('netid', 'examplePassword'))  # Person 1
 
-# For the rest of your friends so you can simply ask for their emails.
-friends = [
-    'example@email.com',
-    'example1@email.com',
-    'example2@email.com',
-    'example3@email.com',
-    'example4@email.com',
-    'example5@email.com',
-    'example6@email.com',
-    'example7@email.com',
-]
+# Note: Just uncomment the ones below to match the number of people
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 2
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 3
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 4
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 5
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 6
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 7
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 8
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 9
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 10
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 11
+# loginArray.append(User.User('netid', 'examplePassword'))  # Person 12
+
