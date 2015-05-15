@@ -18,6 +18,7 @@ git clone https://github.com/JasonYao/NYU-Bobst-Library-Reservation-Automator.gi
 2.) First you'll need to move and edit the settings file
 
 ```
+cd NYU-Bobst-Library-Reservation-Automator
 mv example.settings.py settings.py
 nano settings.py
 ```
