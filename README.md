@@ -33,15 +33,16 @@ of any liability for your stupidity.
 NYU's Library system makes it annoying for students because each student is limited to one booking every 24 hours.
 This script is meant to help alleviate the issue, by having it done automatically for you.
 
-More notably, there are some quirks (read: exploits) of the current system that can help us with these bookings.
+More notably, there is a quirk (read: exploits) of the current system that can help us with these bookings.
 
-    1.) The fact that for sanitation purposes, the library system does not actually get rid of duplicates, i.e.
-        `JasonYao@nyu.edu` and `JasonYao+1@nyu.edu` are counted as separate when dealing with emails.
-        What this means: we can exploit this so that the number of friends required to automate are
-        lower, enabling us to simply use 1 person and their duplicate email for each 2-hour block.
+1.) The fact that for sanitation purposes, the library system does not actually get rid
+	of duplicates, i.e. `JasonYao@nyu.edu` and `JasonYao+1@nyu.edu` are counted as separate
+	when dealing with emails. What this means: we can exploit this so that the number of
+	friends required to book a room sequentially are lower, enabling us to simply use 1
+	person and their duplicate email for each 2-hour block.
 
-    2.) The fact that we can utilize web drivers such as with [Selenium](https://selenium-python.readthedocs.org) that can help us with
-        automation.
+2.) The fact that we can utilize web drivers such as with [Selenium](https://selenium-python.readthedocs.org) that can
+	help us with automation when dealing with web elements.
 
 Utilizing these two axioms, this simplifies the amount of work required to be much less than we'd normally need.
 
