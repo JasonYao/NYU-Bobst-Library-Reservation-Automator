@@ -2,12 +2,23 @@ __author__ = 'Jason Yao'
 
 # Majour imports
 import datetime
-from selenium.common.exceptions import WebDriverException
+
+# Web driver imports
+# Common imports
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+
+# Support imports
 from selenium.webdriver.support import select
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 # Package dependent imports
 import settings
+
+# Error Handling imports
 from bin import ValidationError
 
 # Function to turn an into into their string form
@@ -52,6 +63,7 @@ def main():
     reservationDate = currentDate + datetime.timedelta(days = settings.offsetDays)
     reservationYear = reservationDate.strftime("%Y") # Date in string form for easy comparison
     reservationMonth = toMonth(reservationDate.strftime('%m')) # Month in string form for easy comparison
+    reservationDay = reservationDate.strftime("%d")
 
     # Builds a browser connection
     browser = webdriver.Firefox()
@@ -59,7 +71,7 @@ def main():
 
     for i in range(0, len(settings.loginArray)):
         try:
-            print('Attempting to register with user number: ' + str(i))
+            print('user number ' + str(i) + ' status: starting')
             browser.get(
                 'https://login.library.nyu.edu/pds?func=load-login&institute=NYU&calling_system=https:login.library.nyu'
                 '.edu&url=https%3A%2F%2Frooms.library.nyu.edu%2Fvalidate%3Freturn_url%3Dhttps%253A%252F%252Frooms.'
@@ -80,36 +92,58 @@ def main():
             if browser.current_url == "https://shibboleth.nyu.edu/idp/Authn/UserPassword":
                 raise ValidationError.ValidationError("User had invalid login: " + str(i))
 
-
-            #browser.close()
-            print("Got to test point, exiting now")
-            exit(0)
-
-            ##### START OF FUCKING AROUND WITH THE DATEPICKER #####TODO HOLY SHIT BALLS THIS IS HARD WTF KIND OF RETARDED SHIT IS NYU UP TO
-            datePicker = browser.find_element_by_xpath("//div[@id='ui-datepicker-div']").click()
+            ##### START OF FUCKING AROUND WITH THE DATEPICKER #####
+            WebDriverWait(browser, 15).until(
+                EC.presence_of_element_located((By.XPATH,
+                                                "//form[@class='form-horizontal']"))
+            )
+            datePicker = browser.find_element_by_xpath(
+                "//form[@class='form-horizontal']/div[@class='well well-sm']"
+                "/div[@class='form-group has-feedback']/div[@class='col-sm-6']/input[1]"
+            ).click()
 
             # Checks the month and year
-            datePickerYear = browser.find_element_by_xpath("//div[@class='ui-datepicker-year']")
+            datePickerYear = browser.find_element_by_xpath(
+                "//div[@id='ui-datepicker-div']/div[@class='ui-datepicker-group ui-datepicker-group-first']/"
+                "div[@class='ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-left']/"
+                "div[@class='ui-datepicker-title']/span[@class='ui-datepicker-year']"
+            )
             datePickerYear = datePickerYear.text
-            datePickerMonth = browser.find_element_by_xpath("//div[@class='ui-datepicker-month']")
+            datePickerMonth = browser.find_element_by_xpath(
+                "//div[@id='ui-datepicker-div']/div[@class='ui-datepicker-group ui-datepicker-group-first']/"
+                "div[@class='ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-left']/"
+                "div[@class='ui-datepicker-title']/span[@class='ui-datepicker-month']"
+            )
             datePickerMonth = datePickerMonth.text
 
             # Alters year
             while (datePickerYear != reservationYear):
                 # Right clicks the month until it is correct year
-                browser.find_element_by_xpath("//a[@class='ui-datepicker-next ui-corner-all']").click()
-                datePickerYear = browser.find_element_by_xpath("//div[@class='ui-datepicker-year']")
+                browser.find_element_by_class_name("ui-icon-circle-triangle-e").click()
+
+                # Updates the date picker year
+                datePickerYear = browser.find_element_by_xpath(
+                    "//div[@id='ui-datepicker-div']/div[@class='ui-datepicker-group ui-datepicker-group-first']/"
+                    "div[@class='ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-left']/"
+                    "div[@class='ui-datepicker-title']/span[@class='ui-datepicker-year']"
+                )
                 datePickerYear = datePickerYear.text
+
             # Alters month
-            while (datePickerMonth != reservationMonth):
+            while datePickerMonth != reservationMonth:
                 # Right clicks the month until it is correct month
-                browser.find_element_by_xpath("//a[@class='ui-datepicker-next ui-corner-all']").click()
-                datePickerMonth = browser.find_element_by_xpath("//div[@class='ui-datepicker-month']")
+                browser.find_element_by_class_name("ui-icon-circle-triangle-e").click()
+
+                # Updates the date picker month
+                datePickerMonth = browser.find_element_by_xpath(
+                    "//div[@id='ui-datepicker-div']/div[@class='ui-datepicker-group ui-datepicker-group-first']/"
+                    "div[@class='ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-left']/"
+                    "div[@class='ui-datepicker-title']/span[@class='ui-datepicker-month']"
+                )
                 datePickerMonth = datePickerMonth.text
 
             # At this, point, we are on the correct year & month. Selects the date below
-            browser.find_element_by_xpath("//tbody/td[@class=' ']")
-            browser.find_element_by_css_selector()
+            browser.find_element_by_link_text(reservationDay).click()
             ##### END OF FUCKING AROUND WITH THE DATEPICKER #####
 
             # Finds the time
@@ -120,22 +154,34 @@ def main():
                 startMorning = False
                 timeStart -= 12
 
-            # Deals with the time TODO Finish the part with the time clicking
-            select(browser.find_element_by_css_selector("select#reservation_hour")).select_by_value(timeStart).click()
+            if timeStart == 0:
+                timeStart = 12
 
-            select(browser.find_element_by_css_selector("select#reservation_minute")).select_by_value('0').click()
+            # Selects the start time
+            select.Select(browser.find_element_by_css_selector("select#reservation_hour")
+                          ).select_by_value(str(timeStart))
+
+            select.Select(browser.find_element_by_css_selector("select#reservation_minute")
+                          ).select_by_value("0")
 
             # Selects AM/PM
             if startMorning:
-                select(browser.find_element_by_css_selector("select#reservation_ampm")).select_by_value('am').click()
+                select.Select(browser.find_element_by_css_selector("select#reservation_ampm")).select_by_value('am')
             else:
-                select(browser.find_element_by_css_selector("select#reservation_ampm")).select_by_value('pm').click()
+                select.Select(browser.find_element_by_css_selector("select#reservation_ampm")).select_by_value('pm')
 
             # Selects the time length
-            select(browser.find_element_by_css_selector("select#reservation_how_long")).select_by_value('120').click()
+            select.Select(browser.find_element_by_css_selector("select#reservation_how_long")
+                          ).select_by_value('120')
 
             # Clicks the button
             browser.find_element_by_css_selector("button#generate_grid").click()
+
+            # Utilize a wait
+            WebDriverWait(browser, 15).until(
+                EC.presence_of_element_located((By.XPATH,
+                                                "//form[@id='new_reservation']"))
+            )
 
             # Fills in the description of the booking
             description = browser.find_element_by_id("reservation_title")
@@ -145,12 +191,18 @@ def main():
             duplicateCC = browser.find_element_by_id("reservation_cc")
             duplicateCC.send_keys(settings.loginArray[i].emailDuplicate)
 
-            # Selects the room
-            browser.find_element_by_xpath\
-                ("//tbody/tr[3]/td[@class='timeslot timeslot_available timeslot_preferred timeslot_preferred_first']").click()
+            # Selects the row
+            roomText = "Bobst " + settings.floorNumber + "-" + settings.roomNumber
+            divFind = browser.find_element_by_xpath('//div[contains(text(), "' + roomText + '")]')
+
+            # We have the row now, we click the appropriate place
+            divFind.find_element_by_xpath(
+                "../../td[@class='timeslot timeslot_available timeslot_preferred timeslot_preferred_first']").click()
 
             # Submits
             browser.find_element_by_xpath("//button[@class='btn btn-lg btn-primary']").click()
+
+            print('user number ' + str(i) + ' status: done')
 
             # Logout
             browser.get('https://rooms.library.nyu.edu/logout')
