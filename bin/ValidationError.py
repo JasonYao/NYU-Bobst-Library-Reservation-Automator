@@ -1,4 +1,4 @@
-__author__ = 'Jason'
+__author__ = 'Jason Yao'
 
 class ValidationError(Exception):
     def __init__(self, value):
