@@ -39,9 +39,11 @@ OPTIONAL:
 To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](https://skullhouse.nyc)
 webserver since the reservations will nominally be for the use of fraternity members.
 
-5.) run ` ./time ` to have your server/computer run the program every x time. You will be prompted to insert the time
-between jobs, please don't be an ass and set it to every 1 seconds, that'll just wreck your computer, and I absolve myself
-of any liability for your stupidity.
+5.) run ` ./time ` to have your server/computer run the program every x time. You'll have to manually edit the file to
+change the time between jobs, please don't be an ass and set it to every 1 seconds, that'll just wreck your computer,
+and I absolve myself of any liability for your stupidity.
+
+NOTE: Only run `./time` ONCE, this will add the job to run every day at 1am by default.
 
 ## The Explaination
 NYU's Library system makes it annoying for students because each student is limited to one booking every 24 hours.
