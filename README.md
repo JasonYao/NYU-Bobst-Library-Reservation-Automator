@@ -29,13 +29,17 @@ CTRL + x
 y
 ```
 
-3.) Simply use `./run.sh` to check and download dependencies if required, and build a localized virtual environment automatically.
+3.) Now you'll need to have your .csv file on hand - build a google docs that asks for a person's username
+and password (since it's the most efficient way), and save export the Google form as `userLogins.csv`. If you
+don't want to use the .csv format, just manually edit the `settings.py` file.
+
+4.) Simply use `./run.sh` to check and download dependencies if required, and build a localized virtual environment automatically.
 
 OPTIONAL:
 To set up daily automatic reservations, it's best to use your own server that's online 24 hours. I will be using [Phi Kappa Sigma's](https://skullhouse.nyc)
 webserver since the reservations will nominally be for the use of fraternity members.
 
-4.) run ` ./time ` to have your server/computer run the program every x time. You will be prompted to insert the time
+5.) run ` ./time ` to have your server/computer run the program every x time. You will be prompted to insert the time
 between jobs, please don't be an ass and set it to every 1 seconds, that'll just wreck your computer, and I absolve myself
 of any liability for your stupidity.
 
