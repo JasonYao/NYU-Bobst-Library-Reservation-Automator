@@ -8,7 +8,6 @@ import datetime
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 
 # Support imports
 from selenium.webdriver.support import select
@@ -97,7 +96,7 @@ def main():
                 EC.presence_of_element_located((By.XPATH,
                                                 "//form[@class='form-horizontal']"))
             )
-            datePicker = browser.find_element_by_xpath(
+            browser.find_element_by_xpath(
                 "//form[@class='form-horizontal']/div[@class='well well-sm']"
                 "/div[@class='form-group has-feedback']/div[@class='col-sm-6']/input[1]"
             ).click()
@@ -202,10 +201,16 @@ def main():
             # Submits
             browser.find_element_by_xpath("//button[@class='btn btn-lg btn-primary']").click()
 
+            # Waits a bit for confirmation to occur
+            browser.implicitly_wait(5)
+
             print('user number ' + str(i) + ' status: done')
 
             # Logout
             browser.get('https://rooms.library.nyu.edu/logout')
+
+            # Close browser connection
+            browser.close()
 
         except GeneratorExit:
             return
@@ -217,8 +222,6 @@ def main():
         except Exception as ex2:
             print(ex2)
 
-    # Close browser connection
-    browser.close()
     return
 
 # Standard boilerplate to call the main() function to begin the program.
