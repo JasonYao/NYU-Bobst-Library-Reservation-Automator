@@ -2,7 +2,9 @@
 An automator written in Python to automatically book the room that you want, can be run daily automatically with cron
 
 ## Description
-This script is for the use of automatically reserving rooms in bobst library.
+This script is for the use of automatically reserving rooms in bobst library. NOTE: This library is one of my first forays into Python, and so the code as is is currently unstable.
+To have a wondefully written and stable app to run the Automator, I urge everybody to use my [Java](https://github.com/JasonYao/NYU-Bobst-Library-Reservation-Automator-Java) implementation, since 
+I'm much more comfortable with Java and C than python, and the Java implementation is confirmed to be tested and working as of June 7th, 2015.
 
 ## Usage
 1.) Make a project directory to keep this out of your way
